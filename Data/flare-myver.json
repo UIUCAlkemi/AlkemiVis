@@ -1,0 +1,109 @@
+{
+   "name": "0",
+   "info": "[label="scaledJacobian <= 0.7306\nmse = 0.0501475013341\nsamples = 3868", shape="box"] ;",
+   "children": [{
+      "name": "1",
+      "info": "[label="jacobian <= 0.0000\nmse = 0.0817722063539\nsamples = 637", shape="box"] ;",
+      "children": [{
+         "name": "2",
+         "info": "[label="smallestAngle <= 17.1970\nmse = 0.0447777344\nsamples = 250", shape="box"] ;",
+         "children": [{
+            "name": "3",
+            "info": "[label="jacobian <= 0.0000\nmse = 0.0199528135952\nsamples = 213", shape="box"] ;",
+            "children": [{
+               "name": "4",
+               "info": "[label="mse = 0.0086\nsamples = 122\nvalue = [ 0.88622951]", shape="box"] ;"
+               },{
+               "name": "5",
+               "info": "[label="mse = 0.0074\nsamples = 91\nvalue = [ 0.66593407]", shape="box"] ;"
+               }]
+            },{
+            "name": "6",
+            "info": "[label="stretch <= 0.1008\nmse = 0.0731167275384\nsamples = 37", shape="box"] ;",
+            "children": [{
+               "name": "7",
+               "info": "[label="mse = 0.0276\nsamples = 14\nvalue = [ 0.67285714]", shape="box"] ;"
+               },{
+               "name": "8",
+               "info": "[label="mse = 0.0409\nsamples = 23\nvalue = [ 0.27478261]", shape="box"] ;"
+               }]
+            }]
+         },{
+         "name": "9",
+         "info": "[label="jacobian <= 0.0002\nmse = 0.0535255813953\nsamples = 387", shape="box"] ;",
+         "children": [{
+            "name": "10",
+            "info": "[label="jacobian <= 0.0000\nmse = 0.031673102578\nsamples = 258", shape="box"] ;",
+            "children": [{
+               "name": "11",
+               "info": "[label="mse = 0.0134\nsamples = 115\nvalue = [ 0.44626087]", shape="box"] ;"
+               },{
+               "name": "12",
+               "info": "[label="mse = 0.0168\nsamples = 143\nvalue = [ 0.18867133]", shape="box"] ;"
+               }]
+            },{
+            "name": "13",
+            "info": "[label="jacobian <= 0.0025\nmse = 0.0679606273661\nsamples = 129", shape="box"] ;",
+            "children": [{
+               "name": "14",
+               "info": "[label="mse = 0.0180\nsamples = 27\nvalue = [ 0.78814815]", shape="box"] ;"
+               },{
+               "name": "15",
+               "info": "[label="mse = 0.0558\nsamples = 102\nvalue = [ 0.44019608]", shape="box"] ;"
+               }]
+            }]
+         }]
+      },{
+      "name": "16",
+      "info": "[label="skew <= 0.3554\nmse = 8.02373248707e-05\nsamples = 3231", shape="box"] ;",
+      "children": [{
+         "name": "17",
+         "info": "[label="skew <= 0.3552\nmse = 3.71938852082e-06\nsamples = 3223", shape="box"] ;",
+         "children": [{
+            "name": "18",
+            "info": "[label="distortion <= 0.9368\nmse = 1.24185023726e-07\nsamples = 3220", shape="box"] ;",
+            "children": [{
+               "name": "19",
+               "info": "[label="mse = 0.0000\nsamples = 1\nvalue = [ 0.02]", shape="box"] ;"
+               },{
+               "name": "20",
+               "info": "[label="mse = 0.0000\nsamples = 3219\nvalue = [ 0.]", shape="box"] ;"
+               }]
+            },{
+            "name": "21",
+            "info": "[label="shear <= 0.7312\nmse = 0.000266666666667\nsamples = 3", shape="box"] ;",
+            "children": [{
+               "name": "22",
+               "info": "[label="mse = 0.0000\nsamples = 1\nvalue = [ 0.08]", shape="box"] ;"
+               },{
+               "name": "23",
+               "info": "[label="mse = 0.0001\nsamples = 2\nvalue = [ 0.05]", shape="box"] ;"
+               }]
+            }]
+         },{
+         "name": "24",
+         "info": "[label="smallestAngle <= 47.2671\nmse = 0.0021\nsamples = 8", shape="box"] ;",
+         "children": [{
+            "name": "25",
+            "info": "[label="conditionNumber <= 2.8886\nmse = 0.0005\nsamples = 4", shape="box"] ;",
+            "children": [{
+               "name": "26",
+               "info": "[label="mse = 0.0001\nsamples = 2\nvalue = [ 0.19]", shape="box"] ;"
+               },{
+               "name": "27",
+               "info": "[label="mse = 0.0001\nsamples = 2\nvalue = [ 0.23]", shape="box"] ;"
+               }]
+            },{
+            "name": "28",
+            "info": "[label="largestAngle <= 133.0286\nmse = 0.0005\nsamples = 4", shape="box"] ;",
+            "children": [{
+               "name": "29",
+               "info": "[label="mse = 0.0001\nsamples = 2\nvalue = [ 0.11]", shape="box"] ;"
+               },{
+               "name": "30",
+               "info": "[label="mse = 0.0001\nsamples = 2\nvalue = [ 0.15]", shape="box"] ;"
+               }]
+            }]
+         }]
+      }]
+   }
