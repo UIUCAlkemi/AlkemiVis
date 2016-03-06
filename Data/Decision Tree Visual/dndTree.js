@@ -1,5 +1,5 @@
 // Get JSON data
-treeJSON = d3.json("flare.json", function(error, treeData) {
+treeJSON = d3.json("flare-myver.json", function(error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -26,12 +26,19 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     var diagonal = d3.svg.diagonal()
         .projection(function(d) {
             return [d.y, d.x];
-        });
+    });
 
     // A recursive helper function for performing some setup by walking through all nodes
+    var domainList = [];
+    var c10 = d3.scale.category10();
 
     function visit(parent, visitFn, childrenFn) {
         if (!parent) return;
+
+        var div = parent.info1.split(" ");
+        var div1 = div[0];
+        if(domainList.indexOf(div1) < 0) domainList.push(div1);
+
 
         visitFn(parent);
 
@@ -53,6 +60,23 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
+    var nodeColor = d3.scale.category10()
+            .domain(domainList);
+            //.range(c20);
+    // var svg1 = d3.select("#color-Indicator")
+    //          .append("svg")
+    //          .attr("width", 50)
+    //          .attr("height", 400);
+             // .attr("class", "overlay");
+    // svg1.selectAll("circle")
+    // .data( d3.range(10) )
+    // .enter()
+    // .append("circle")
+    // .attr("r", 18 )
+    // .attr("cx", d3.scale.linear().domain([-1, 10]).range([0, 400]) )
+    // .attr("cy", 25)
+    // .attr("fill", c10 );
+   
 
     // sort the tree according to the node names
 
@@ -330,9 +354,32 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
 
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        d = toggleChildren(d);
+        // var text = document.getElementById("mode_switch");
+        // console.log(text.innerHTML);
+        // window.alert("Hi");
+        // if(text.innerHTML == "subtree mode"){
+            d = toggleChildren(d);
+        // }
+        // if(text.innerHTML == "text mode"){
+        //     hideText(d);
+        // }
         update(d);
         centerNode(d);
+    }
+
+    function click2(d) {
+        if (d3.event.defaultPrevented) return; // click suppressed
+        d = hideText(d);
+        update(d);
+        centerNode(d);
+    }
+
+    function hideText(d) {
+            var active   = d.active ? false : true;
+          // d.enter().select("text").style("visibility", "visible") ;
+                      d.active = active;
+
+            return d;
     }
 
     function update(source) {
@@ -379,16 +426,19 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
-            })
-            .on('click', click);
+            });
+            // .on('click', click);
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
             .attr("r", 0)
+            .on('click', click)
             .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                // return d._children ? "lightsteelblue" : "#fff";
+                var tag = d.info1.split(" ");
+                return nodeColor(tag[0]);
             });
-
+ 
         nodeEnter.append("text")
             .attr("x", function(d) {
                 return d.children || d._children ? -10 : 10;
@@ -399,16 +449,39 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
-                return d.name;
+                // if(d.active) return "->";
+                return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "->";
             })
-            .style("fill-opacity", 0);
+            .style("fill-opacity", 0)
+            .on('click', click2)//function(d){
+            // // if (d3.event.defaultPrevented) return; // click suppressed
+            // // Determine if current line is visible
+            // var active   = d.active ? false : true;
+            //   // newOpacity = active ? 0 : 1;
+            //   // if(active){
+            //   //   node.select("text").text("->");
+            //   //   // node.select("text") = null;
+            //   // }
+            //   // else{
+            //   //   node.select("text").text(function(d) {
+            //   //       return d.info1 + ", " + d.info2 +  ", " + d.info3;
+            //   //   });
+            //   //   // d.select("text") = d.select("_text");
+            //   //   // d.select("_text") = null;
+            //   // }
+            // // Hide or show the elements
+            // // d.select("text").style("opacity", newOpacity);
+            // // d3.select("#blueAxis").style("opacity", newOpacity);
+            // // Update whether or not the elements are active
+            // d.active = active;
+            // })
 
         // phantom node to give us mouseover in a radius around it
         nodeEnter.append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
             .attr("opacity", 0.2) // change this to zero to hide the target area
-        .style("fill", "red")
+            .style("fill", "red")
             .attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
                 overCircle(node);
@@ -418,22 +491,26 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             });
 
         // Update the text to reflect whether node has children or not.
-        node.select('text')
-            .attr("x", function(d) {
-                return d.children || d._children ? -10 : 10;
-            })
-            .attr("text-anchor", function(d) {
-                return d.children || d._children ? "end" : "start";
-            })
+        node.select("text.nodeText")
+            // .attr("x", function(d) {
+            //     return d.children || d._children ? -10 : 10;
+            // })
+            // .attr("text-anchor", function(d) {
+            //     return d.children || d._children ? "end" : "start";
+            // })
             .text(function(d) {
-                return d.name;
+                return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "->";
             });
+
 
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
             .attr("r", 4.5)
             .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                var tag = d.info1.split(" ");
+                //return 
+                // console.log(nodeColor(tag[0]));
+                return d._children ? "lightsteelblue" : nodeColor(tag[0]);
             });
 
         // Transition nodes to their new position.
@@ -519,4 +596,18 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     centerNode(root);
+
+    // baseSvg.selectAll("square")
+    // .data( d3.range(10) )
+    // .enter()
+    // .append("square")
+    // .attr("width", 6 )
+    // .attr("height", 6)
+    // .attr("x",  20)
+    // .attr("y", d3.scale.linear().domain([-1, 10]).range([0, 400]))
+    // .attr("fill", c10 );
+    // .append("text")
+    // .text(domainList)
+    // .attr("cx",  40)
+    // .attr("cy", d3.scale.linear().domain([-1, 10]).range([0, 400]));
 });

@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <style type="text/css">
   
-	.node {
+  .node {
     cursor: pointer;
   }
 
@@ -46,6 +46,21 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="dndTree.js"></script>
 <body>
+   <button id = "mode_switch" onclick = "changeText()" type="button">subtree mode</button>
+   <div id = "color-Indicator"></div>
+<script>
+  function changeText(){
+    var text = document.getElementById("mode_switch");
+    //console.log(text.innerHTML);
+    //window.alert("Hi");
+    if(text.innerHTML == "subtree mode"){
+      text.innerHTML = "text mode";
+    }
+    else{
+      text.innerHTML = "subtree mode";
+    }
+  }
+</script>
     <div id="tree-container"></div>
 </body>
 </html>
