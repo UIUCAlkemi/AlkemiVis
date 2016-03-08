@@ -192,7 +192,7 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             }
             if (dragStarted) {
                 domNode = this;
-                initiateDrag(d, domNode);
+                // initiateDrag(d, domNode);
             }
 
             // get coords of mouseEvent relative to svg container to allow for panning
