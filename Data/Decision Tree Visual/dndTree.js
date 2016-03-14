@@ -224,6 +224,10 @@ function update(source) {
         .attr('class', 'nodeCircle')
         .attr("r", 0)
         .on('click', click)
+        .attr("data-legend",function(d){
+            var tag = d.info1.split(" ");
+            return tag[0];
+        })
         .style("fill", function(d) {
             // return d._children ? "lightsteelblue" : "#fff";
             var tag = d.info1.split(" ");
@@ -347,6 +351,12 @@ function update(source) {
         d.x0 = d.x;
         d.y0 = d.y;
     });
+    
+    var legend = svgGroup.append("g")
+          .attr("class","legend")
+          .attr("transform","translate(150,30)")
+          .style("font-size","12px")
+          .call(d3.legend)
 }
 
 // functin that resizes the tree and canvass
