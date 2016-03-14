@@ -76,7 +76,10 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
     // .attr("cx", d3.scale.linear().domain([-1, 10]).range([0, 400]) )
     // .attr("cy", 25)
     // .attr("fill", c10 );
-   
+   // set legend
+    var legendRectSize = 18;
+    var legendSpacing = 4;
+
 
     // sort the tree according to the node names
 
@@ -439,6 +442,7 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
                 return nodeColor(tag[0]);
             });
  
+
         nodeEnter.append("text")
             .attr("x", function(d) {
                 return d.children || d._children ? -10 : 10;
@@ -489,6 +493,7 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             .on("mouseout", function(node) {
                 outCircle(node);
             });
+        
 
         // Update the text to reflect whether node has children or not.
         node.select("text.nodeText")
@@ -583,6 +588,31 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
+
+        //add legend
+        var legend = svgGroup.selectAll('.legend')                     // NEW
+          .data(color.domain())                                   // NEW
+          .enter()                                                // NEW
+          .append('g')                                            // NEW
+          .attr('class', 'legend')                                // NEW
+          .attr('transform', function (d, i) {                     // NEW
+              var height = legendRectSize + legendSpacing;          // NEW
+              var offset = height * color.domain().length / 2;     // NEW
+              var horz = -2 * legendRectSize;                       // NEW
+              var vert = i * height - offset;                       // NEW
+              return 'translate(' + horz + ',' + vert + ')';        // NEW
+          });                                                     // NEW
+
+        legend.append('rect')                                     // NEW
+          .attr('width', legendRectSize)                          // NEW
+          .attr('height', legendRectSize)                         // NEW
+          .style('fill', color)                                   // NEW
+          .style('stroke', color);                                // NEW
+
+        legend.append('text')                                     // NEW
+          .attr('x', legendRectSize + legendSpacing)              // NEW
+          .attr('y', legendRectSize - legendSpacing)              // NEW
+          .text(function (d) { return d; });
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
