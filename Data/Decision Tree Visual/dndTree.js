@@ -17,6 +17,9 @@ var root;
 var viewerWidth = window.innerWidth;
 var viewerHeight = window.innerHeight;
 
+//test if legend initialized
+var legend_init = 0;
+
 var tree = d3.layout.tree()
     .size([viewerHeight, viewerWidth]);
 
@@ -224,10 +227,6 @@ function update(source) {
         .attr('class', 'nodeCircle')
         .attr("r", 0)
         .on('click', click)
-        .attr("data-legend",function(d){
-            var tag = d.info1.split(" ");
-            return tag[0];
-        })
         .style("fill", function(d) {
             // return d._children ? "lightsteelblue" : "#fff";
             var tag = d.info1.split(" ");
@@ -244,8 +243,8 @@ function update(source) {
             return d.children || d._children ? "end" : "start";
         })
         .text(function(d) {
-            // if(d.active) return "->";
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "->";
+            // if(d.active) return "→";
+            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "→";
         })
         .style("fill-opacity", 0)
         .on('click', click2)
@@ -267,13 +266,17 @@ function update(source) {
     // Update the text to reflect whether node has children or not.
     node.select("text.nodeText")
         .text(function(d) {
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "->";
+            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "→";
         });
 
 
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
         .attr("r", 4.5)
+        .attr("data-legend",function(d){
+            var tag = d.info1.split(" ");
+            return tag[0];
+        })
         .style("fill", function(d) {
             var tag = d.info1.split(" ");
             //return 
@@ -352,11 +355,23 @@ function update(source) {
         d.y0 = d.y;
     });
     
-    var legend = svgGroup.append("g")
-          .attr("class","legend")
-          .attr("transform","translate(150,30)")
-          .style("font-size","12px")
-          .call(d3.legend)
+    //legend adding function
+    if(legend_init == 0){
+        var legend = svgGroup.append("g")
+              .attr("class","legend")
+              .attr("transform","translate(200,30)")
+              .style("font-size","12px")
+              .call(d3.legend)
+        legend_init = 1;
+    }
+    else{
+        var legend = svgGroup.select("g.legend")
+              .attr("class","legend")
+              .attr("transform","translate(200,30)")
+              .style("font-size","12px")
+              .call(d3.legend)  
+        
+    }
 }
 
 // functin that resizes the tree and canvass
