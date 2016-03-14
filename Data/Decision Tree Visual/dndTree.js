@@ -77,8 +77,8 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
     // .attr("cy", 25)
     // .attr("fill", c10 );
    // set legend
-    var legendRectSize = 18;
-    var legendSpacing = 4;
+//    var legendRectSize = 18;
+ //   var legendSpacing = 4;
 
 
     // sort the tree according to the node names
@@ -436,6 +436,7 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             .attr('class', 'nodeCircle')
             .attr("r", 0)
             .on('click', click)
+            .attr("data-legend", function (d) { return d.name })
             .style("fill", function(d) {
                 // return d._children ? "lightsteelblue" : "#fff";
                 var tag = d.info1.split(" ");
@@ -589,6 +590,12 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             d.y0 = d.y;
         });
 
+        legend = svgGroup.append("g")
+          .attr("class", "legend")
+          .attr("transform", "translate(150,30)")
+          .style("font-size", "12px")
+          .call(d3.legend)
+        /*
         //add legend
         var legend = svgGroup.selectAll('.legend')                     // NEW
           .data(color.domain())                                   // NEW
@@ -613,6 +620,7 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
           .attr('x', legendRectSize + legendSpacing)              // NEW
           .attr('y', legendRectSize - legendSpacing)              // NEW
           .text(function (d) { return d; });
+          */
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
