@@ -436,7 +436,10 @@ treeJSON = d3.json("flare-myver.json", function(error, treeData) {
             .attr('class', 'nodeCircle')
             .attr("r", 0)
             .on('click', click)
-            .attr("data-legend", function (d) { return d.name })
+            .attr("data-legend", function (d) {
+                var tag = d.info1.split(" ");
+                return tag[0];
+            })
             .style("fill", function(d) {
                 // return d._children ? "lightsteelblue" : "#fff";
                 var tag = d.info1.split(" ");
