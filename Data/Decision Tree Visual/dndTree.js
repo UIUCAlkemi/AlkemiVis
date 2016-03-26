@@ -26,7 +26,7 @@ var tree = d3.layout.tree()
 // define a d3 diagonal projection for use by the node paths later on.
 var diagonal = d3.svg.diagonal()
     .projection(function(d) {
-        return [d.y, d.x];
+        return [d.x, d.y];
 });
 
 // A recursive helper function for performing some setup by walking through all nodes
@@ -125,8 +125,8 @@ var outCircle = function(d) {
 
 function centerNode(source) {
     scale = zoomListener.scale();
-    x = -source.y0;
-    y = -source.x0;
+    x = -source.x0;
+    y = -source.y0;
     x = x * scale + viewerWidth / 2;
     y = y * scale + viewerHeight / 2;
     d3.select('g').transition()
@@ -159,6 +159,8 @@ function click(d) {
     update(d);
     centerNode(d);
 }
+
+// Switch text on click on the text
 
 function click2(d) {
     if (d3.event.defaultPrevented) return; // click suppressed
@@ -219,7 +221,7 @@ function update(source) {
        // .call(dragListener)
         .attr("class", "node")
         .attr("transform", function(d) {
-            return "translate(" + source.y0 + "," + source.x0 + ")";
+            return "translate(" + source.x0 + "," + source.y0 + ")";
         });
         // .on('click', click);
 
@@ -234,7 +236,7 @@ function update(source) {
         });
 
     nodeEnter.append("text")
-        .attr("x", function(d) {
+        .attr("y", function(d) {
             return d.children || d._children ? -10 : 10;
         })
         .attr("dy", ".35em")
@@ -244,7 +246,8 @@ function update(source) {
         })
         .text(function(d) {
             // if(d.active) return "→";
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "→";
+            text = d.children || d._children ? "↑" : "↓"
+            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : text;
         })
         .style("fill-opacity", 0)
         .on('click', click2)
@@ -266,7 +269,8 @@ function update(source) {
     // Update the text to reflect whether node has children or not.
     node.select("text.nodeText")
         .text(function(d) {
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "→";
+            text = d.children || d._children ? "↑" : "↓"
+            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : text;
         });
 
 
@@ -288,7 +292,7 @@ function update(source) {
     var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) {
-            return "translate(" + d.y + "," + d.x + ")";
+            return "translate(" + d.x + "," + d.y + ")";
         });
 
     // Fade the text in
@@ -299,7 +303,7 @@ function update(source) {
     var nodeExit = node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) {
-            return "translate(" + source.y + "," + source.x + ")";
+            return "translate(" + source.x + "," + source.y + ")";
         })
         .remove();
 
@@ -359,22 +363,22 @@ function update(source) {
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(200,30)")
+              .attr("transform","translate(-100,-100)")
               .style("font-size","12px")
               .call(d3.legend)
         legend_init = 1;
     }
     else{
-        var legend = svgGroup.select("g.legend")
+        svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(200,30)")
+              .attr("transform","translate(-100,-100)")
               .style("font-size","12px")
               .call(d3.legend)  
         
     }
 }
 
-// functin that resizes the tree and canvass
+// function that resizes the tree and canvas
 function resize() {
     width = window.innerWidth, height = window.innerHeight;
     baseSvg.attr("width", width).attr("height", height);
