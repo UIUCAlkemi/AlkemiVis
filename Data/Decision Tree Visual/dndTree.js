@@ -235,15 +235,15 @@ function update(source) {
 
     nodeEnter.append("text")
         .attr("x", function(d) {
-            return d.children || d._children ? 5 : -5;
+            return d.children || d._children ? 7: -5;
         })
         .attr("y", function(d) {
-            return d.children || d._children ? -20 : 10;
+            return d.children || d._children ? -20 : 15;
         })
         .attr("dy", ".35em")
         .attr('class', 'nodeText')
         .attr("text-anchor", function(d) {
-            return d.children || d._children ? "end" : "start";
+            return d.children || d._children ? "start" : "start";
         })
         .text(function(d) {
             // if(d.active) return "→";
@@ -269,8 +269,26 @@ function update(source) {
     // Update the text to reflect whether node has children or not.
     node.select("text.nodeText")
         .text(function(d) {
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : "→";
+                return d.active ? d.info1: "→";
+        })
+        .append("tspan")
+        .attr("dy", "1.0em")
+        .attr("x", function(d) {
+            return d.children || d._children ? 7: -5;
+        })
+        .text(function(d) {
+            // if(d.active) return "→";
+            return d.active ? d.info2 :" ";
+        })
+        .append("tspan")
+        .attr("dy", "1.0em")
+        .attr("x", function(d) {
+            return d.children || d._children ? 7: -5;
+        })
+        .text(function(d) {
+                return d.active ? d.info3:"";
         });
+
 
 
     // Change the circle fill depending on whether it has children and is collapsed
@@ -363,7 +381,7 @@ function update(source) {
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(900,10)")
+              .attr("transform","translate(1050,10)")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)
@@ -372,7 +390,7 @@ function update(source) {
     else{
         var legend = svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(900,10)")
+              .attr("transform","translate(1050,10)")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)  
