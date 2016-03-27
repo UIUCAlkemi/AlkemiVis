@@ -26,7 +26,7 @@ var tree = d3.layout.tree()
 // define a d3 diagonal projection for use by the node paths later on.
 var diagonal = d3.svg.diagonal()
     .projection(function(d) {
-        return [d.y, d.x];
+        return [d.x, d.y];
 });
 
 // A recursive helper function for performing some setup by walking through all nodes
@@ -125,15 +125,15 @@ var outCircle = function(d) {
 
 function centerNode(source) {
     scale = zoomListener.scale();
-    x = -source.y0;
-    y = -source.x0;
+    x = -source.x0;
+    y = -source.y0;
     x = x * scale + viewerWidth / 2;
     y = y * scale + viewerHeight / 2;
     d3.select('g').transition()
         .duration(duration)
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
     zoomListener.scale(scale);
-    zoomListener.translate([x, y]);
+    zoomListener.translate([y, x]);
 }
 
 // Toggle children function
@@ -157,14 +157,14 @@ function click(d) {
         d = toggleChildren(d);
 
     update(d);
-    centerNode(d);
+//    centerNode(d);
 }
 
 function click2(d) {
     if (d3.event.defaultPrevented) return; // click suppressed
     d = hideText(d);
     update(d);
-    centerNode(d);
+//    centerNode(d);
 }
 
 function hideText(d) {
@@ -193,7 +193,7 @@ function update(source) {
         }
     };
     childCount(0, root);
-    var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
+    var newHeight = d3.max(levelWidth) * 55; // 25 pixels per line  
     tree = tree.size([newHeight, viewerWidth]);
 
     // Compute the new tree layout.
@@ -202,7 +202,7 @@ function update(source) {
 
     // Set widths between levels based on maxLabelLength.
     nodes.forEach(function(d) {
-        d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+        d.y = (d.depth * (maxLabelLength * 20)); //maxLabelLength * 10px
         // alternatively to keep a fixed scale one can set a fixed depth per level
         // Normalize for fixed-depth by commenting out below line
         // d.y = (d.depth * 500); //500px per level.
@@ -235,7 +235,10 @@ function update(source) {
 
     nodeEnter.append("text")
         .attr("x", function(d) {
-            return d.children || d._children ? -10 : 10;
+            return d.children || d._children ? 5 : -5;
+        })
+        .attr("y", function(d) {
+            return d.children || d._children ? -20 : 10;
         })
         .attr("dy", ".35em")
         .attr('class', 'nodeText')
@@ -272,9 +275,10 @@ function update(source) {
 
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
-        .attr("r", 4.5)
+        .attr("r", 6.5)
         .attr("data-legend",function(d){
             var tag = d.info1.split(" ");
+//            if(d.children)
             return tag[0];
         })
         .style("fill", function(d) {
@@ -288,7 +292,7 @@ function update(source) {
     var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) {
-            return "translate(" + d.y + "," + d.x + ")";
+            return "translate(" + d.x + "," + d.y + ")";
         });
 
     // Fade the text in
@@ -299,7 +303,7 @@ function update(source) {
     var nodeExit = node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) {
-            return "translate(" + source.y + "," + source.x + ")";
+            return "translate(" + source.x + "," + source.y + ")";
         })
         .remove();
 
@@ -320,8 +324,8 @@ function update(source) {
         .attr("class", "link")
         .attr("d", function(d) {
             var o = {
-                x: source.x0,
-                y: source.y0
+                x: source.y0,
+                y: source.x0
             };
             return diagonal({
                 source: o,
@@ -351,24 +355,26 @@ function update(source) {
 
     // Stash the old positions for transition.
     nodes.forEach(function(d) {
-        d.x0 = d.x;
-        d.y0 = d.y;
+        d.x0 = d.y;
+        d.y0 = d.x;
     });
     
     //legend adding function
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(200,30)")
-              .style("font-size","12px")
+              .attr("transform","translate(900,10)")
+              .style("font-size","15px")
+              .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)
         legend_init = 1;
     }
     else{
         var legend = svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(200,30)")
-              .style("font-size","12px")
+              .attr("transform","translate(900,10)")
+              .style("font-size","15px")
+              .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)  
         
     }
