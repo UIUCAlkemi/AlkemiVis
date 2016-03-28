@@ -14,8 +14,8 @@ var duration = 750;
 var root;
 
 // size of the diagram
-var viewerWidth = window.innerWidth;
-var viewerHeight = window.innerHeight;
+var viewerWidth = window.innerWidth - 24;
+var viewerHeight = window.innerHeight - 124;
 
 //test if legend initialized
 var legend_init = 0;
@@ -153,9 +153,7 @@ function toggleChildren(d) {
 
 function click(d) {
     if (d3.event.defaultPrevented) return; // click suppressed
-
-        d = toggleChildren(d);
-
+    d = toggleChildren(d);
     update(d);
     centerNode(d);
 }
@@ -170,11 +168,10 @@ function click2(d) {
 }
 
 function hideText(d) {
-        var active   = d.active ? false : true;
+    var active   = d.active ? false : true;
       // d.enter().select("text").style("visibility", "visible") ;
-                  d.active = active;
-
-        return d;
+    d.active = active;
+    return d;
 }
 
 
@@ -195,7 +192,7 @@ function update(source) {
         }
     };
     childCount(0, root);
-    var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
+    var newHeight = d3.max(levelWidth) * 55; // 25 pixels per line  
     tree = tree.size([newHeight, viewerWidth]);
 
     // Compute the new tree layout.
@@ -204,7 +201,7 @@ function update(source) {
 
     // Set widths between levels based on maxLabelLength.
     nodes.forEach(function(d) {
-        d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+        d.y = (d.depth * (maxLabelLength * 20)); //maxLabelLength * 10px
         // alternatively to keep a fixed scale one can set a fixed depth per level
         // Normalize for fixed-depth by commenting out below line
         // d.y = (d.depth * 500); //500px per level.
@@ -236,13 +233,16 @@ function update(source) {
         });
 
     nodeEnter.append("text")
+        .attr("x", function(d) {
+            return d.children || d._children ? 7: -5;
+        })
         .attr("y", function(d) {
-            return d.children || d._children ? -10 : 10;
+            return d.children || d._children ? -20 : 15;
         })
         .attr("dy", ".35em")
         .attr('class', 'nodeText')
         .attr("text-anchor", function(d) {
-            return d.children || d._children ? "end" : "start";
+            return d.children || d._children ? "start" : "start";
         })
         .text(function(d) {
             // if(d.active) return "→";
@@ -270,15 +270,34 @@ function update(source) {
     node.select("text.nodeText")
         .text(function(d) {
             text = d.children || d._children ? "↑" : "↓"
-            return d.active ? d.info1 + ", " + d.info2 +  ", " + d.info3 : text;
+            return d.active ? d.info1 : text; //+ ", " + d.info2 +  ", " + d.info3 : text;
+        })
+        .append("tspan")
+        .attr("dy", "1.0em")
+        .attr("x", function(d) {
+            return d.children || d._children ? 7: -5;
+        })
+        .text(function(d) {
+            // if(d.active) return "→";
+            return d.active ? d.info2 :" ";
+        })
+        .append("tspan")
+        .attr("dy", "1.0em")
+        .attr("x", function(d) {
+            return d.children || d._children ? 7: -5;
+        })
+        .text(function(d) {
+                return d.active ? d.info3:"";
         });
+
 
 
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
-        .attr("r", 4.5)
+        .attr("r", 6.5)
         .attr("data-legend",function(d){
             var tag = d.info1.split(" ");
+//            if(d.children)
             return tag[0];
         })
         .style("fill", function(d) {
@@ -363,25 +382,26 @@ function update(source) {
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(-100,-100)")
-              .style("font-size","12px")
+              .attr("transform","translate(1050,10)")
+              .style("font-size","15px")
+              .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)
         legend_init = 1;
     }
     else{
         svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(-100,-100)")
-              .style("font-size","12px")
+              .attr("transform","translate(1050,10)")
+              .style("font-size","15px")
+              .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)  
-        
     }
 }
 
 // function that resizes the tree and canvas
 function resize() {
     width = window.innerWidth, height = window.innerHeight;
-    baseSvg.attr("width", width).attr("height", height);
+    baseSvg.attr("width", width - 24).attr("height", height - 124);
     tree.size([width, height]);
 }
 
