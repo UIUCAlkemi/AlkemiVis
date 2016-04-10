@@ -14,7 +14,7 @@ var duration = 750;
 var root;
 
 // size of the diagram
-var viewerWidth = window.innerWidth - 24;
+var viewerWidth = (window.innerWidth - 24) / 2;
 var viewerHeight = window.innerHeight - 124;
 
 //test if legend initialized
@@ -401,7 +401,7 @@ function update(source) {
 // function that resizes the tree and canvas
 function resize() {
     width = window.innerWidth, height = window.innerHeight;
-    baseSvg.attr("width", width - 24).attr("height", height - 124);
+    baseSvg.attr("width", (width - 24) / 2).attr("height", height - 124);
     tree.size([width, height]);
 }
 
