@@ -1,4 +1,4 @@
-var scene, camera, renderer;
+    var scene, camera, renderer;
     var geometry, material, mesh;
 
     init();
@@ -11,13 +11,32 @@ var scene, camera, renderer;
         camera = new THREE.PerspectiveCamera( 75, window.innerWidth / (window.innerHeight - 124) / 2, 1, 10000 );
         camera.position.z = 1000;
 
-        geometry = new THREE.BoxGeometry( 200, 200, 200 );
-        material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+        //light here 
+        var directionalLight = new THREE.DirectionalLight(0x99ff33);
+        directionalLight.position.set(0,0,1);
+        scene.add(directionalLight);
 
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+        //load obj
+        var manager = new THREE.LoadingManager();
+        manager.onProgress = function(){
+            console.log(item,loaded,total);
+        }
 
-        renderer = new THREE.WebGLRenderer();
+        var loader = new THREE.OBJLoader(manager);
+        loader.load('teapot.obj',function(object){
+            object.traverse(function(child){
+                //use texture here
+            });
+            object.position.x = 0;
+            object.position.y = 0;
+            object.scale.x = 100;
+            object.scale.y = 100;
+            object.scale.z = 100;
+            obj = object;
+            scene.add(obj);
+        });
+
+        renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize( window.innerWidth /2, window.innerHeight - 124 );
 
         document.getElementById("canvas").appendChild( renderer.domElement );
@@ -28,8 +47,7 @@ var scene, camera, renderer;
 
         requestAnimationFrame( animate );
 
-        mesh.rotation.x += 0.01;
-        mesh.rotation.y += 0.02;
+        obj.rotation.y += 0.02;
 
         renderer.render( scene, camera );
 
