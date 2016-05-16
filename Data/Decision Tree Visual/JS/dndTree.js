@@ -168,15 +168,19 @@ function click2(d) {
 }
 
 function hideText(d) {
-    var active   = d.active ? false : true;
       // d.enter().select("text").style("visibility", "visible") ;
 //    var node_text = svgGroup.selectAll("g.nodeText");
 //    d3.selectAll("#ntext").class();
 //    d3.selectAll("nodeText").active(active);
-    svgGroup.selectAll("g.node")
-            .selectAll("text.nodeText").text(function(d){
+//    svgGroup.selectAll("g.node")
+//            .selectAll("text.nodeText").text(function(d){
+    var active   = d.active ? false : true;
+    d.active = active;
+    while(d.parent){
+        d = d.parent;
         d.active = active;
-    });
+    }
+//    });
     return d;
 }
 
