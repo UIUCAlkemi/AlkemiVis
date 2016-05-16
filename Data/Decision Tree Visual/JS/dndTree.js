@@ -173,8 +173,8 @@ function hideText(d) {
 //    var node_text = svgGroup.selectAll("g.nodeText");
 //    d3.selectAll("#ntext").class();
 //    d3.selectAll("nodeText").active(active);
-    var node = svgGroup.selectAll("g.node");
-    node.selectAll("text.nodeText").text(function(d){
+    svgGroup.selectAll("g.node")
+            .selectAll("text.nodeText").text(function(d){
         d.active = active;
     });
     return d;
