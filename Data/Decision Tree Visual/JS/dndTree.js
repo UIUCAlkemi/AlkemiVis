@@ -169,6 +169,19 @@ function click2(d) {
     centerNode(d);
 }
 
+function handleChildren(d)
+{
+    var active = d.active ? false : true;
+    d.active = active;
+    if (!d.children) {
+        return;
+    }
+    else {
+            handleChildren(d.children[0]);
+            handleChildren(d.children[1]);
+    }
+}
+
 function hideText(d) {
       // d.enter().select("text").style("visibility", "visible") ;
 //    var node_text = svgGroup.selectAll("g.nodeText");
@@ -182,8 +195,8 @@ function hideText(d) {
 //            .selectAll("text.nodeText").text(function(d){
 //      d.active = active;
 //    };
-
-/*this part is for showing parent node info*/
+    
+    
 
     var radios = document.getElementsByName('type');
     if (radios[0].checked) {
@@ -197,8 +210,10 @@ function hideText(d) {
             d.active = active;
         });
     }
-
-    else if (radios[2].checked) {
+    else if (radios[2].checked)
+        handleChildren(d);
+    else if (radios[3].checked) {
+        /*this part is for showing parent node info*/
         d.active = active;
         while(d.parent){
             d = d.parent;
