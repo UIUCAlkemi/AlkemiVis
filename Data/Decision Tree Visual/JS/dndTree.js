@@ -170,7 +170,13 @@ function click2(d) {
 function hideText(d) {
     var active   = d.active ? false : true;
       // d.enter().select("text").style("visibility", "visible") ;
-    d.active = active;
+//    var node_text = svgGroup.selectAll("g.nodeText");
+//    d3.selectAll("#ntext").class();
+//    d3.selectAll("nodeText").active(active);
+    var node = svgGroup.selectAll("g.node");
+    node.selectAll("text.nodeText").text(function(d){
+        d.active = active;
+    });
     return d;
 }
 
@@ -192,7 +198,7 @@ function update(source) {
         }
     };
     childCount(0, root);
-    var newHeight = d3.max(levelWidth) * 55; // 25 pixels per line  
+    var newHeight = d3.max(levelWidth) * 100; // 25 pixels per line  
     tree = tree.size([newHeight, viewerWidth]);
 
     // Compute the new tree layout.
@@ -240,7 +246,9 @@ function update(source) {
             return d.children || d._children ? -20 : 15;
         })
         .attr("dy", ".35em")
-        .attr('class', 'nodeText')
+        .attr("class", "nodeText")
+ //       .attr("id", "ntext")
+        .style("font-size","10px")
         .attr("text-anchor", function(d) {
             return d.children || d._children ? "start" : "start";
         })
@@ -382,7 +390,7 @@ function update(source) {
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(1050,10)")
+              .attr("transform","translate(800,280)")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)
@@ -391,10 +399,11 @@ function update(source) {
     else{
         svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(1050,10)")
+              .attr("transform","translate(800,280)")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)  
+        //could translate legend according current location
     }
 }
 
