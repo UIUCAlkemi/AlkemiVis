@@ -163,6 +163,8 @@ function click(d) {
 function click2(d) {
     if (d3.event.defaultPrevented) return; // click suppressed
     d = hideText(d);
+
+
     update(d);
     centerNode(d);
 }
@@ -182,12 +184,27 @@ function hideText(d) {
 //    };
 
 /*this part is for showing parent node info*/
-    d.active = active;
-    while(d.parent){
-        d = d.parent;
+
+    var radios = document.getElementsByName('type');
+    if (radios[0].checked) {
+        // show the text for one node at a time
         d.active = active;
     }
-//    });
+    else if (radios[1].checked){
+        // show the text for all nodes
+        svgGroup.selectAll("g.node")
+                .selectAll("text.nodeText").text(function(d){
+            d.active = active;
+        });
+    }
+
+    else if (radios[2].checked) {
+        d.active = active;
+        while(d.parent){
+            d = d.parent;
+            d.active = active;
+        }
+    }
     return d;
 }
 
@@ -210,7 +227,7 @@ function update(source) {
     };
     childCount(0, root);
     var newHeight = d3.max(levelWidth) * 100; // 25 pixels per line  
-    tree = tree.size([newHeight, viewerWidth]);
+    tree = tree.size([newHeight / 2.5, viewerWidth]);
 
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse(),
@@ -422,7 +439,7 @@ function update(source) {
 function resize() {
     width = window.innerWidth, height = window.innerHeight;
     baseSvg.attr("width", (width - 24) / 2).attr("height", height - 124);
-    tree.size([width, height]);
+    tree.size([width / 2.5, height]);
 }
 
 function show() {
