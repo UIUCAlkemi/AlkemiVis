@@ -178,7 +178,7 @@ function hideText(d) {
     d.active = active;
     while(d.parent){
         d = d.parent;
-        d.active = active; //
+        d.active = active;
     }
 //    });
     return d;
