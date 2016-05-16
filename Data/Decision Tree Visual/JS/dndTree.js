@@ -241,8 +241,8 @@ function update(source) {
         }
     };
     childCount(0, root);
-    var newHeight = d3.max(levelWidth) * 100; // 25 pixels per line  
-    tree = tree.size([newHeight / 2.5, viewerWidth]);
+    var newHeight = d3.max(levelWidth) * 120; // 25 pixels per line  
+    tree = tree.size([newHeight, viewerWidth]);
 
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse(),
@@ -428,12 +428,13 @@ function update(source) {
         d.x0 = d.x;
         d.y0 = d.y;
     });
-    
+    var legend_x = source.x - 50;
+    var legend_y = source.y + 260;
     //legend adding function
     if(legend_init == 0){
         var legend = svgGroup.append("g")
               .attr("class","legend")
-              .attr("transform","translate(800,280)")
+              .attr("transform","translate("+legend_x+","+legend_y+")")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)
@@ -442,7 +443,7 @@ function update(source) {
     else{
         svgGroup.select("g.legend")
               .attr("class","legend")
-              .attr("transform","translate(800,280)")
+              .attr("transform","translate("+legend_x+","+legend_y+")")
               .style("font-size","15px")
               .style("font-family","Lucida Sans Unicode")
               .call(d3.legend)  
@@ -454,7 +455,7 @@ function update(source) {
 function resize() {
     width = window.innerWidth, height = window.innerHeight;
     baseSvg.attr("width", (width - 24) / 2).attr("height", height - 124);
-    tree.size([width / 2.5, height]);
+    tree.size([width/2.5, height]);
 }
 
 function show() {
