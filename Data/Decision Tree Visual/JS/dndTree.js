@@ -172,9 +172,16 @@ function hideText(d) {
 //    var node_text = svgGroup.selectAll("g.nodeText");
 //    d3.selectAll("#ntext").class();
 //    d3.selectAll("nodeText").active(active);
+
+    var active   = d.active ? false : true;
+
+/*this part is for showing all node info*/
 //    svgGroup.selectAll("g.node")
 //            .selectAll("text.nodeText").text(function(d){
-    var active   = d.active ? false : true;
+//      d.active = active;
+//    };
+
+/*this part is for showing parent node info*/
     d.active = active;
     while(d.parent){
         d = d.parent;
