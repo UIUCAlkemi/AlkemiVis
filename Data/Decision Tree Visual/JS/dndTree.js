@@ -442,11 +442,15 @@ function update(source) {
     }
     else{
         svgGroup.select("g.legend")
-              .attr("class","legend")
-              .attr("transform","translate("+legend_x+","+legend_y+")")
-              .style("font-size","15px")
-              .style("font-family","Lucida Sans Unicode")
-              .call(d3.legend)  
+            .transition()
+            .duration(duration)
+            .attr("transform", function(d) {
+            return "translate(" + legend_x + "," + legend_y + ")";
+        })
+              // .attr("transform","translate("+legend_x+","+legend_y+")")
+              // .style("font-size","15px")
+              // .style("font-family","Lucida Sans Unicode")
+              // .call(d3.legend)  
         //could translate legend according current location
     }
 }
